@@ -1,5 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
+using ContactManagement.Application.Interfaces;
+using ContactManagement.Application.Services;
 using ContactManagement.Domain.Interfaces;
 using ContactManagement.InfraStructure.Respositories;
 
@@ -15,7 +17,9 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddTransient<IDbConnection>( db => new SqlConnection(connectionString));
 
+builder.Services.AddScoped<IContactServices, ContactServices>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
 
 var app = builder.Build();
 
