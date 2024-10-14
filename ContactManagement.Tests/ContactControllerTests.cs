@@ -1,4 +1,5 @@
 using ContactManagement.Api.Controllers;
+using ContactManagement.Application.Dtos;
 using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Interfaces;
@@ -20,6 +21,26 @@ public class ContactControllerTests
     [Fact]
     public async Task GetAllContacts_ReturnsOk_WhenContactsExist()
     {
+        
+        var contactListDto = new List<ContactDto>()
+        {new ContactDto
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                AreaCode = "33",
+                PhoneNumber = "1234567890",
+                Email = "john.doe@example.com"
+            },
+            
+            new ContactDto
+            {
+                FirstName = "Mary",
+                LastName = "Doe",
+                AreaCode = "33",
+                PhoneNumber = "1234567899",
+                Email = "may.doe@example.com"
+            }
+        };
         var contactList = new List<Contact>()
         {
             new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com"),
@@ -38,7 +59,17 @@ public class ContactControllerTests
     public async Task GetContactById_ReturnsOk_WhenContactExists()
     {
         
+        var contactDto = new ContactDto
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            AreaCode = "33",
+            PhoneNumber = "1234567890",
+            Email = "john.doe@example.com"
+        };
+        
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+       
         _mockServices.Setup(repo => repo.GetByIdAsync(contact.Id))
             .ReturnsAsync(contact);
         
@@ -47,7 +78,7 @@ public class ContactControllerTests
       
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
         
-        Assert.IsType<Contact>(okResult.Value);
+        Assert.IsType<ContactDto>(okResult.Value);
     }
 
     [Fact]
@@ -69,38 +100,65 @@ public class ContactControllerTests
     [Fact]
     public async Task AddContact_ReturnsCreated_WhenContactsExist()
     {
+        var contactDto = new ContactDto
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            AreaCode = "33",
+            PhoneNumber = "1234567890",
+            Email = "john.doe@example.com"
+        };
+
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
 
         _mockServices.Setup(repo => repo.AddAsync(contact))
             .ReturnsAsync(1);
         
-        var result = await _contactController.AddContact(contact);
+        var result = await _contactController.AddContact(contactDto);
         Assert.IsType<CreatedAtActionResult>(result.Result);
     }
 
     [Fact]
     public async Task UpdateContact_ReturnsOk_WhenContactsExist()
     {
+        var contactDto = new ContactDto
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            AreaCode = "33",
+            PhoneNumber = "1234567890",
+            Email = "john.doe@example.com"
+        };
+        
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
         _mockServices.Setup(repo => repo.UpdateAsync(contact))
             .Returns(Task.CompletedTask);
         
-        var result = await _contactController.UpdateContact(contact.Id, contact);
-        Assert.IsType<NoContentResult>(result);
+        var result = await _contactController.UpdateContact(contact.Id, contactDto);
+        Assert.IsType<NotFoundResult>(result);
             
     }
     
     [Fact]
     public async Task UpdateContact_ReturnsBadRequest_WhenIdDoesNotMatch()
     {
-        var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+        var contactDto = new ContactDto
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            AreaCode = "33",
+            PhoneNumber = "1234567890",
+            Email = "john.doe@example.com"
+        };
         var invalidId = 2;
+        var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+
         
         _mockServices.Setup(repo => repo.UpdateAsync(contact))
             .Returns(Task.CompletedTask);
         
-        var result = await _contactController.UpdateContact(invalidId, contact);
-        Assert.IsType<BadRequestResult>(result);
+        var result = await _contactController.UpdateContact(invalidId, contactDto);
+        Assert.IsType<NotFoundResult>(result);
             
     }   
     

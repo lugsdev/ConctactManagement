@@ -1,6 +1,6 @@
+using ContactManagement.Application.Dtos;
 using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
-using ContactManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactManagement.Api.Controllers;
@@ -15,9 +15,9 @@ public class ContactController : ControllerBase
            private readonly IContactServices _contactServices;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContactController"/> class.
+        /// private variable for the <see cref="IContactServices"/> class.
         /// </summary>
-        /// <param name="contactRepository">The repository for handling contact data.</param>
+        /// <param name="contactServices">The repository for handling contact data.</param>
         public ContactController(IContactServices contactServices)
         {
             _contactServices = contactServices;
@@ -28,9 +28,20 @@ public class ContactController : ControllerBase
         /// </summary>
         /// <returns>A list of all contacts.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Contact>>> GetAllContacts()
+        public async Task<ActionResult<IEnumerable<ContactDto>>> GetAllContacts()
         {
-            return Ok(await _contactServices.GetAllAsync());
+            
+            var contacts = await _contactServices.GetAllAsync();
+            
+            
+            return Ok(contacts.Select(contact => new ContactDto
+            {
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                AreaCode = contact.AreaCode,
+                PhoneNumber = contact.PhoneNumber,
+                Email = contact.Email,
+            }).ToList());
         }
 
         /// <summary>
@@ -39,43 +50,59 @@ public class ContactController : ControllerBase
         /// <param name="id">The identifier of the contact.</param>
         /// <returns>The contact with the specified identifier.</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContactById(int id)
+        public async Task<ActionResult<ContactDto>> GetContactById(int id)
         {
             var contact = await _contactServices.GetByIdAsync(id);
             if (contact == null)
             {
                 return NotFound();
             }
-            return Ok(contact);
+
+            var contactDto = new ContactDto
+            {
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                AreaCode = contact.AreaCode,
+                PhoneNumber = contact.PhoneNumber,
+                Email = contact.Email,
+
+            };
+                
+                
+            return Ok(contactDto);
         }
 
         /// <summary>
         /// Adds a new contact.
         /// </summary>
-        /// <param name="contact">The contact to add.</param>
+        /// <param name="contactDto">The contact to add.</param>
         /// <returns>The identifier of the newly added contact.</returns>
         [HttpPost]
-        public async Task<ActionResult<int>> AddContact(Contact contact)
+        public async Task<ActionResult<int>> AddContact(ContactDto contactDto)
         {
+            var contact = new Contact(0, contactDto.FirstName, contactDto.LastName, contactDto.AreaCode, contactDto.PhoneNumber, contactDto.Email);
+
             var id = await _contactServices.AddAsync(contact);
-            return CreatedAtAction(nameof(GetContactById), new { id }, contact);
+            return CreatedAtAction(nameof(GetContactById), new { id }, contactDto);
         }
 
         /// <summary>
         /// Updates an existing contact.
         /// </summary>
         /// <param name="id">The identifier of the contact to update.</param>
-        /// <param name="contact">The updated contact information.</param>
+        /// <param name="contactDto">The updated contact information.</param>
         /// <returns>A status indicating the result of the operation.</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateContact(int id, [FromBody] Contact contact)
+        public async Task<IActionResult> UpdateContact(int id, [FromBody] ContactDto contactDto)
         {
-            if (id != contact.Id)
+            var existingContact = await _contactServices.GetByIdAsync(id);
+            if (existingContact == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             
-            await _contactServices.UpdateAsync(contact);
+            existingContact.UpdateContact(contactDto.FirstName, contactDto.LastName, contactDto.AreaCode, contactDto.PhoneNumber, contactDto.Email); 
+            await _contactServices.UpdateAsync(existingContact);
             return NoContent();
         }
 
@@ -87,6 +114,7 @@ public class ContactController : ControllerBase
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id)
         {
+            
             await _contactServices.DeleteAsync(id);
             return NoContent();
         }
