@@ -1,4 +1,5 @@
 using ContactManagement.Api.Controllers;
+using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,12 @@ namespace ContactManagement.Tests;
 
 public class ContactControllerTests
 {
-    private readonly Mock<IContactRepository> _mockRepository;
+    private readonly Mock<IContactServices> _mockServices;
     private readonly ContactController _contactController;
     public ContactControllerTests()
     {
-        _mockRepository = new Mock<IContactRepository>();
-        _contactController = new ContactController(_mockRepository.Object);
+        _mockServices = new Mock<IContactServices>();
+        _contactController = new ContactController(_mockServices.Object);
     }
 
     [Fact]
@@ -24,7 +25,7 @@ public class ContactControllerTests
             new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com"),
             new Contact(1, "Mary", "Doe", "33", "1234567899", "mary.doe@example.com")
         };
-        _mockRepository.Setup(repo => repo.GetAllAsync())
+        _mockServices.Setup(repo => repo.GetAllAsync())
             .ReturnsAsync(contactList);
         
         var result = await _contactController.GetAllContacts();
@@ -38,7 +39,7 @@ public class ContactControllerTests
     {
         
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
-        _mockRepository.Setup(repo => repo.GetByIdAsync(contact.Id))
+        _mockServices.Setup(repo => repo.GetByIdAsync(contact.Id))
             .ReturnsAsync(contact);
         
         var result = await _contactController.GetContactById(contact.Id);
@@ -55,7 +56,7 @@ public class ContactControllerTests
         var contactId = 2;
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
         
-        _mockRepository.Setup(repo => repo.GetByIdAsync(contact.Id))
+        _mockServices.Setup(repo => repo.GetByIdAsync(contact.Id))
             .ReturnsAsync(contact);
         
         var result = await _contactController.GetContactById(contactId);
@@ -70,7 +71,7 @@ public class ContactControllerTests
     {
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
 
-        _mockRepository.Setup(repo => repo.AddAsync(contact))
+        _mockServices.Setup(repo => repo.AddAsync(contact))
             .ReturnsAsync(1);
         
         var result = await _contactController.AddContact(contact);
@@ -81,7 +82,7 @@ public class ContactControllerTests
     public async Task UpdateContact_ReturnsOk_WhenContactsExist()
     {
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
-        _mockRepository.Setup(repo => repo.UpdateAsync(contact))
+        _mockServices.Setup(repo => repo.UpdateAsync(contact))
             .Returns(Task.CompletedTask);
         
         var result = await _contactController.UpdateContact(contact.Id, contact);
@@ -95,7 +96,7 @@ public class ContactControllerTests
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
         var invalidId = 2;
         
-        _mockRepository.Setup(repo => repo.UpdateAsync(contact))
+        _mockServices.Setup(repo => repo.UpdateAsync(contact))
             .Returns(Task.CompletedTask);
         
         var result = await _contactController.UpdateContact(invalidId, contact);
@@ -108,7 +109,7 @@ public class ContactControllerTests
     public async Task DeleteContact_ReturnsNoContent_WhenContactIsDeleted()
     {
         var contactId = 1;
-        _mockRepository.Setup(repo => repo.DeleteAsync(contactId));
+        _mockServices.Setup(repo => repo.DeleteAsync(contactId));
         
         var result = await _contactController.DeleteContact(contactId);
         

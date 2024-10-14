@@ -1,3 +1,4 @@
+using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,15 @@ namespace ContactManagement.Api.Controllers;
 [Route("[controller]")]
 public class ContactController : ControllerBase
 {
-           private readonly IContactRepository _contactRepository;
+           private readonly IContactServices _contactServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactController"/> class.
         /// </summary>
         /// <param name="contactRepository">The repository for handling contact data.</param>
-        public ContactController(IContactRepository contactRepository)
+        public ContactController(IContactServices contactServices)
         {
-            _contactRepository = contactRepository;
+            _contactServices = contactServices;
         }
 
         /// <summary>
@@ -29,10 +30,7 @@ public class ContactController : ControllerBase
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetAllContacts()
         {
-            var contacts = await _contactRepository.GetAllAsync();
-            {
-                return Ok(contacts);
-            }
+            return Ok(await _contactServices.GetAllAsync());
         }
 
         /// <summary>
@@ -43,7 +41,7 @@ public class ContactController : ControllerBase
         [HttpGet("{id}")]
         public async Task<ActionResult<Contact>> GetContactById(int id)
         {
-            var contact = await _contactRepository.GetByIdAsync(id);
+            var contact = await _contactServices.GetByIdAsync(id);
             if (contact == null)
             {
                 return NotFound();
@@ -59,7 +57,7 @@ public class ContactController : ControllerBase
         [HttpPost]
         public async Task<ActionResult<int>> AddContact(Contact contact)
         {
-            var id = await _contactRepository.AddAsync(contact);
+            var id = await _contactServices.AddAsync(contact);
             return CreatedAtAction(nameof(GetContactById), new { id }, contact);
         }
 
@@ -77,7 +75,7 @@ public class ContactController : ControllerBase
                 return BadRequest();
             }
             
-            await _contactRepository.UpdateAsync(contact);
+            await _contactServices.UpdateAsync(contact);
             return NoContent();
         }
 
@@ -89,7 +87,7 @@ public class ContactController : ControllerBase
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id)
         {
-            await _contactRepository.DeleteAsync(id);
+            await _contactServices.DeleteAsync(id);
             return NoContent();
         }
 }
