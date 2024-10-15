@@ -25,7 +25,12 @@ public class ContactServices : IContactServices
         return await _repository.GetAllAsync();
     }
 
-    public async Task<int> AddAsync(Contact contact)
+	public async Task<IEnumerable<Contact>> GetByAreaCodeAsync(int areaCode)
+	{
+		return await _repository.GetByAreaCodeAsync(areaCode);
+	}
+
+	public async Task<int> AddAsync(Contact contact)
     {
         return await _repository.AddAsync(contact);
     }

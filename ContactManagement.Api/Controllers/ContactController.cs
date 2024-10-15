@@ -12,7 +12,7 @@ namespace ContactManagement.Api.Controllers;
 [Route("[controller]")]
 public class ContactController : ControllerBase
 {
-           private readonly IContactServices _contactServices;
+        private readonly IContactServices _contactServices;
 
         /// <summary>
         /// private variable for the <see cref="IContactServices"/> class.
@@ -72,12 +72,32 @@ public class ContactController : ControllerBase
             return Ok(contactDto);
         }
 
-        /// <summary>
-        /// Adds a new contact.
-        /// </summary>
-        /// <param name="contactDto">The contact to add.</param>
-        /// <returns>The identifier of the newly added contact.</returns>
-        [HttpPost]
+
+	    [HttpGet("/{areaCode}")]
+	    public async Task<ActionResult<IEnumerable<ContactDto>>> GetContactByAreaCode(int areaCode)
+	    {
+		    var contacts = await _contactServices.GetByAreaCodeAsync(areaCode);
+		    if (contacts == null)
+		    {
+			    return NotFound();
+		    }
+
+		    return Ok(contacts.Select(contact => new ContactDto
+		    {
+			    FirstName = contact.FirstName,
+			    LastName = contact.LastName,
+			    AreaCode = contact.AreaCode,
+			    PhoneNumber = contact.PhoneNumber,
+			    Email = contact.Email,
+		    }).ToList());
+	}
+
+	/// <summary>
+	/// Adds a new contact.
+	/// </summary>
+	/// <param name="contactDto">The contact to add.</param>
+	/// <returns>The identifier of the newly added contact.</returns>
+	[HttpPost]
         public async Task<ActionResult<int>> AddContact(ContactDto contactDto)
         {
             var contact = new Contact(0, contactDto.FirstName, contactDto.LastName, contactDto.AreaCode, contactDto.PhoneNumber, contactDto.Email);

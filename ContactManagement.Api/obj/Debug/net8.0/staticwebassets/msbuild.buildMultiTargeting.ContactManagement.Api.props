@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ContactManagement.Api.props" />
+</Project>

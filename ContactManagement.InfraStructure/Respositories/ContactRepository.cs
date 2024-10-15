@@ -35,8 +35,15 @@ namespace ContactManagement.InfraStructure.Respositories;
             return await _dbConnection.QueryAsync<Contact>(query);
         }
 
-        /// <inheritdoc/>
-        public async Task<int> AddAsync(Contact contact)
+	    /// <inheritdoc/>
+	    public async Task<IEnumerable<Contact>> GetByAreaCodeAsync(int areaCode)
+	    {
+		    const string query = "SELECT * FROM Contacts WHERE AreaCode = @AreaCode";
+		    return await _dbConnection.QueryAsync<Contact>(query, new { AreaCode = areaCode });
+	    }
+
+	/// <inheritdoc/>
+	    public async Task<int> AddAsync(Contact contact)
         {
             const string query = @"
                 INSERT INTO Contacts (FirstName, LastName, AreaCode, PhoneNumber, Email) 
