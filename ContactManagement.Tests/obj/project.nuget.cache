@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X7tQwLr9vr4=",
+  "dgSpecHash": "+oDEYekMxys=",
   "success": true,
-  "projectFilePath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
+  "projectFilePath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lucas\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",

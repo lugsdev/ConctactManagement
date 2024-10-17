@@ -6600,11 +6600,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
       "projectName": "ContactManagement.Tests",
-      "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
+      "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Tests\\ContactManagement.Tests.csproj",
       "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Tests\\obj\\",
+      "outputPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6622,8 +6622,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Api\\ContactManagement.Api.csproj": {
-              "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Api\\ContactManagement.Api.csproj"
+            "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Api\\ContactManagement.Api.csproj": {
+              "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Api\\ContactManagement.Api.csproj"
             }
           }
         }

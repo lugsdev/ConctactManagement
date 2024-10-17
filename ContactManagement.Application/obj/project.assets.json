@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Application\\ContactManagement.Application.csproj",
+      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Application\\ContactManagement.Application.csproj",
       "projectName": "ContactManagement.Application",
-      "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Application\\ContactManagement.Application.csproj",
+      "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Application\\ContactManagement.Application.csproj",
       "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Application\\obj\\",
+      "outputPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -54,8 +54,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Domain\\ContactManagement.Domain.csproj": {
-              "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Projeto Daniel\\ConctactManagement\\ContactManagement.Domain\\ContactManagement.Domain.csproj"
+            "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Domain\\ContactManagement.Domain.csproj": {
+              "projectPath": "C:\\Users\\lucas\\OneDrive\\Área de Trabalho\\Tech\\ConctactManagement\\ContactManagement.Domain\\ContactManagement.Domain.csproj"
             }
           }
         }
