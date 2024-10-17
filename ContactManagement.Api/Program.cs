@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string connectionString = builder.Configuration.GetConnectionString("ConnectionLucas");
 builder.Services.AddTransient<IDbConnection>( db => new SqlConnection(connectionString));
 
 builder.Services.AddScoped<IContactServices, ContactServices>();

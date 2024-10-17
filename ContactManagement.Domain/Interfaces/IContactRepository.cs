@@ -17,12 +17,19 @@ public interface IContactRepository
     /// <returns>A list of all contacts.</returns>
     Task<IEnumerable<Contact>> GetAllAsync();
 
-    /// <summary>
-    /// Adds a new contact to the repository.
-    /// </summary>
-    /// <param name="contact">The contact to add.</param>
-    /// <returns>The identifier of the newly added contact.</returns>
-    Task<int> AddAsync(Contact contact);
+	/// <summary>
+	/// Returns all contacts from the same area code entered
+	/// </summary>
+	/// <param name="areaCode"></param>
+	/// <returns></returns>
+	Task<IEnumerable<Contact>> GetByAreaCodeAsync(int areaCode);
+
+	/// <summary>
+	/// Adds a new contact to the repository.
+	/// </summary>
+	/// <param name="contact">The contact to add.</param>
+	/// <returns>The identifier of the newly added contact.</returns>
+	Task<int> AddAsync(Contact contact);
 
     /// <summary>
     /// Updates an existing contact in the repository.
