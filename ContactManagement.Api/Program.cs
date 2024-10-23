@@ -16,12 +16,18 @@ builder.Services.AddControllers()
     {
         config.RegisterValidatorsFromAssemblyContaining<ContactDtoValidator>();
     });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-string connectionString = builder.Configuration.GetConnectionString("ConnectionMarla");
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    
+    c.IncludeXmlComments(xmlPath); // Include XML comments
+    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}"); 
+    c.EnableAnnotations(); 
+});
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddTransient<IDbConnection>( db => new SqlConnection(connectionString));
 
 builder.Services.AddScoped<IContactServices, ContactServices>();

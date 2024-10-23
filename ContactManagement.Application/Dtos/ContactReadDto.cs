@@ -1,34 +1,23 @@
-namespace ContactManagement.Application.Dtos;
+using Swashbuckle.AspNetCore.Annotations;
 
 public class ContactReadDto
 {
-    /// <summary>
-    /// Gets the unique identifier of the Contact.
-    /// </summary>
+    [SwaggerSchema("The unique identifier Id of the contact.")]
     public int Id { get; set; }
     
-    /// <summary>
-    /// Gets the first name of the Contact.
-    /// </summary>
+    [SwaggerSchema("The first name of the contact.")]
     public string FirstName { get; set; }
-    
-    /// <summary>
-    /// Gets the last name of the Contact.
-    /// </summary>
+
+    [SwaggerSchema("The last name of the contact.")]
     public string LastName { get; set; }
-    
-    /// <summary>
-    /// Gests the area code of the Contact
-    /// </summary>
+
+    [SwaggerSchema("The area code for the contact's phone number.")]
     public string AreaCode { get; set; }
-    
-    /// <summary>
-    /// Gets the phone number of the Contact.
-    /// </summary>
+
+    [SwaggerSchema("The contact's phone number.")]
     public string PhoneNumber { get; set; }
-    
-    /// <summary>
-    /// Gets the email of the Contact.
-    /// </summary>
+
+    [SwaggerSchema("The contact's email address.")]
     public string Email { get; set; }
+
 }

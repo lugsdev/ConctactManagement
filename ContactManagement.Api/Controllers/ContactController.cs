@@ -28,14 +28,15 @@ public class ContactController : ControllerBase
         /// </summary>
         /// <returns>A list of all contacts.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContactDto>>> GetAllContacts()
+        public async Task<ActionResult<IEnumerable<ContactReadDto>>> GetAllContacts()
         {
             
             var contacts = await _contactServices.GetAllAsync();
             
             
-            return Ok(contacts.Select(contact => new ContactDto
+            return Ok(contacts.Select(contact => new ContactReadDto
             {
+	            Id = contact.Id,
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
                 AreaCode = contact.AreaCode,
