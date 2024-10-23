@@ -10,4 +10,9 @@
       <Compile Remove="Class1.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+      <PackageReference Include="IdentityModel" Version="7.0.0" />
+    </ItemGroup>
+
 </Project>
