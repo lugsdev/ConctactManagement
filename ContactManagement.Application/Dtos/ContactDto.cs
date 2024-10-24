@@ -1,3 +1,4 @@
+
 namespace ContactManagement.Application.Dtos;
 
 public class ContactDto

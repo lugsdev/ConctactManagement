@@ -1,21 +1,25 @@
 using ContactManagement.Api.Controllers;
+using ContactManagement.Api.Extensions.Models;
 using ContactManagement.Application.Dtos;
 using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Net;
 
 namespace ContactManagement.Tests;
 
 public class ContactControllerTests
 {
     private readonly Mock<IContactServices> _mockServices;
+        private readonly Mock<INotificationService> _mockNotificationServices;
     private readonly ContactController _contactController;
     public ContactControllerTests()
     {
         _mockServices = new Mock<IContactServices>();
-        _contactController = new ContactController(_mockServices.Object);
+        _mockNotificationServices = new Mock<INotificationService>();
+        _contactController = new ContactController(_mockServices.Object, _mockNotificationServices.Object);
     }
 
     [Fact]
@@ -51,7 +55,7 @@ public class ContactControllerTests
         
         var result = await _contactController.GetAllContacts();
         
-        Assert.IsType<OkObjectResult>(result.Result);
+        Assert.IsType<ObjectResult>(result);
         Assert.Equal(2, contactList.Count);
     }
 
@@ -76,7 +80,7 @@ public class ContactControllerTests
         var result = await _contactController.GetContactById(contact.Id);
         
       
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var okResult = Assert.IsType<ObjectResult>(result);
         
         Assert.IsType<ContactDto>(okResult.Value);
     }
@@ -92,7 +96,7 @@ public class ContactControllerTests
         
         var result = await _contactController.GetContactById(contactId);
         
-        Assert.IsType<NotFoundResult>(result.Result);
+        Assert.IsType<ObjectResult>(result);
         Assert.NotEqual(contact.Id, contactId);
         
     }
@@ -115,7 +119,7 @@ public class ContactControllerTests
             .ReturnsAsync(1);
         
         var result = await _contactController.AddContact(contactDto);
-        Assert.IsType<CreatedAtActionResult>(result.Result);
+        Assert.IsType<ObjectResult>(result);
     }
 
     [Fact]
@@ -129,16 +133,21 @@ public class ContactControllerTests
             PhoneNumber = "1234567890",
             Email = "john.doe@example.com"
         };
-        
+
         var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+
+        _mockServices.Setup(repo => repo.GetByIdAsync(contact.Id))
+            .ReturnsAsync(contact);
+
         _mockServices.Setup(repo => repo.UpdateAsync(contact))
             .Returns(Task.CompletedTask);
-        
+
         var result = await _contactController.UpdateContact(contact.Id, contactDto);
-        Assert.IsType<NotFoundResult>(result);
-            
+
+        var actionResult = Assert.IsType<NoContentResult>(result);
+        Assert.Equal((int)HttpStatusCode.NoContent, actionResult.StatusCode);
     }
-    
+
     [Fact]
     public async Task UpdateContact_ReturnsBadRequest_WhenIdDoesNotMatch()
     {
@@ -151,18 +160,22 @@ public class ContactControllerTests
             Email = "john.doe@example.com"
         };
         var invalidId = 2;
-        var contact = new Contact(1, "John", "Doe", "33", "1234567890", "john.doe@example.com");
 
-        
-        _mockServices.Setup(repo => repo.UpdateAsync(contact))
-            .Returns(Task.CompletedTask);
-        
+        _mockServices.Setup(repo => repo.GetByIdAsync(invalidId))
+            .ReturnsAsync((Contact)null);
+
         var result = await _contactController.UpdateContact(invalidId, contactDto);
-        Assert.IsType<NotFoundResult>(result);
-            
-    }   
-    
-    
+
+        var objectResult = Assert.IsType<ObjectResult>(result);
+
+        Assert.Equal((int)HttpStatusCode.NotFound, objectResult.StatusCode);
+
+        var errorResponse = Assert.IsType<ErrorResponse>(objectResult.Value);
+        Assert.Single(errorResponse.Errors);
+        Assert.Equal("Não existe o contato a ser atualizado.", errorResponse.Errors.First());
+    }
+
+
     [Fact]
     public async Task DeleteContact_ReturnsNoContent_WhenContactIsDeleted()
     {

@@ -4,7 +4,7 @@ namespace ContactManagement.Domain.Entities;
 /// <summary>
 /// Represents a Contact entity in the domain.
 /// </summary>
-public class Contact
+public class Contact: Entity
 {
     /// <summary>
     /// Gets the unique identifier of the Contact.
