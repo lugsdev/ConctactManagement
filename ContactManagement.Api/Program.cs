@@ -6,6 +6,7 @@ using ContactManagement.Application.Validators;
 using ContactManagement.Domain.Interfaces;
 using ContactManagement.InfraStructure.Respositories;
 using FluentValidation.AspNetCore;
+using TechChallenge.Api.Loggin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,11 +28,18 @@ builder.Services.AddSwaggerGen(c =>
     c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}"); 
     c.EnableAnnotations(); 
 });
+
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddTransient<IDbConnection>( db => new SqlConnection(connectionString));
 
 builder.Services.AddScoped<IContactServices, ContactServices>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+{
+    LogLevel = LogLevel.Information,
+}));
 
 
 var app = builder.Build();

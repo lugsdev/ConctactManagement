@@ -21,3 +21,4 @@ public class ContactReadDto
     public string Email { get; set; }
 
 }
+
