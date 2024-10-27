@@ -1,41 +1,40 @@
 using System.Data;
 using System.Data.SqlClient;
-using ContactManagement.Api.Configuration;
-using ContactManagement.Api.Extensions;
 using ContactManagement.Application.Interfaces;
 using ContactManagement.Application.Services;
+using ContactManagement.Application.Validators;
 using ContactManagement.Domain.Interfaces;
 using ContactManagement.InfraStructure.Respositories;
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ValidateModelStateFilter>();
+// Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(config =>
+    {
+        config.RegisterValidatorsFromAssemblyContaining<ContactDtoValidator>();
+    });
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerConfig();
+builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
 
-string connectionString = builder.Configuration.GetConnectionString("ConnectionRafael");
-
+string connectionString = builder.Configuration.GetConnectionString("ConnectionMarla");
 builder.Services.AddTransient<IDbConnection>( db => new SqlConnection(connectionString));
+
 builder.Services.AddScoped<IContactServices, ContactServices>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
 
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
-
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwaggerConfig();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

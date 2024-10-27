@@ -1,5 +1,4 @@
 ﻿using ContactManagement.Application.Dtos;
-using ContactManagement.Domain.Entities;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ContactManagement.Application.Validators
 {
-    public class ContactValidator : AbstractValidator<Contact>
+    public class ContactDtoValidator : AbstractValidator<ContactDto>
     {
-        public ContactValidator()
+        public ContactDtoValidator()
         {
             RuleFor(contact => contact.FirstName)
                 .NotEmpty().WithMessage("O primeiro nome é obrigatório.")
