@@ -17,9 +17,4 @@
       <ProjectReference Include="..\ContactManagement.InfraStructure\ContactManagement.InfraStructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="WeatherForecast.cs" />
-      <Compile Remove="Controllers\WeatherForecastController.cs" />
-    </ItemGroup>
-
 </Project>
