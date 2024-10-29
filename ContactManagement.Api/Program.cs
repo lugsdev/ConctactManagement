@@ -10,6 +10,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TechChallenge.Api.Loggin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Desafio Fase 1 Grupo2", Version = "v1" });
+  
+  
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    
+    c.IncludeXmlComments(xmlPath); // Include XML comments
+    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}"); 
+    c.EnableAnnotations(); 
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -80,6 +89,13 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+{
+    LogLevel = LogLevel.Information,
+}));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -91,7 +107,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Não esqueça de adicionar o middleware de autenticação
+app.UseAuthentication(); // Nï¿½o esqueï¿½a de adicionar o middleware de autenticaï¿½ï¿½o
 app.UseAuthorization();
 
 app.MapControllers();

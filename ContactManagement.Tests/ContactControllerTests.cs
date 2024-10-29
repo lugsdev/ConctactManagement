@@ -4,6 +4,7 @@ using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace ContactManagement.Tests;
@@ -12,10 +13,12 @@ public class ContactControllerTests
 {
     private readonly Mock<IContactServices> _mockServices;
     private readonly ContactController _contactController;
+    private readonly Mock<ILogger<ContactController>> _mockLogger;
     public ContactControllerTests()
     {
         _mockServices = new Mock<IContactServices>();
-        _contactController = new ContactController(_mockServices.Object);
+        _mockLogger = new Mock<ILogger<ContactController>>();
+        _contactController = new ContactController(_mockServices.Object, _mockLogger.Object);
     }
 
     [Fact]
@@ -95,6 +98,10 @@ public class ContactControllerTests
         Assert.IsType<NotFoundResult>(result.Result);
         Assert.NotEqual(contact.Id, contactId);
         
+        _mockLogger.Verify(
+            x => x.LogError(It.Is<string>(s => s.Contains($"Thre is no contact found for the informed id: {contactId}"))),
+            Times.Once);
+        
     }
 
     [Fact]
@@ -162,16 +169,67 @@ public class ContactControllerTests
             
     }   
     
+    [Fact]
+    public async Task UpdateContact_ReturnsNoContent_WhenContactIsUpdated()
+    {
+        // Arrange
+        var contactId = 1;
+        var contactDto = new ContactDto { FirstName = "John", LastName = "Doe" };
+        var existingContact = new Contact(contactId, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+    
+        _mockServices.Setup(repo => repo.GetByIdAsync(contactId))
+            .ReturnsAsync(existingContact);
+        _mockServices.Setup(repo => repo.UpdateAsync(existingContact))
+            .Returns(Task.CompletedTask);
+    
+        // Act
+        var result = await _contactController.UpdateContact(contactId, contactDto);
+
+        // Assert
+        Assert.IsType<NoContentResult>(result);
+
+        // Verify that LogInformation was called
+        _mockLogger.Verify(
+            x => x.LogInformation(It.Is<string>(s => s.Contains($"The contact was successfully updated with id: {contactId}"))),
+            Times.Once);
+    }
+    
     
     [Fact]
     public async Task DeleteContact_ReturnsNoContent_WhenContactIsDeleted()
     {
         var contactId = 1;
-        _mockServices.Setup(repo => repo.DeleteAsync(contactId));
+        var contact = new Contact(contactId, "John", "Doe", "33", "1234567890", "john.doe@example.com");
+        
+        _mockServices.Setup(repo => repo.GetByIdAsync(contactId))
+            .ReturnsAsync(contact);
+
+        _mockServices.Setup(repo => repo.DeleteAsync(contactId))
+            .Returns(Task.CompletedTask);
         
         var result = await _contactController.DeleteContact(contactId);
         
-        Assert.IsType<NoContentResult>(result);
-
+        Assert.IsType<NoContentResult>(result); 
+        
+        _mockServices.Verify(repo => repo.DeleteAsync(contactId), Times.Once);
+        _mockLogger.Verify(x => x.LogInformation($"The contact was successfully deleted with id: {contactId}"), Times.Once);
     }
+    
+    [Fact]
+    public async Task DeleteContact_ReturnsNotFound_WhenContactDoesNotExist()
+    {
+        var contactId = 2;
+
+        _mockServices.Setup(repo => repo.GetByIdAsync(contactId))
+            .ReturnsAsync((Contact)null); 
+        
+        var result = await _contactController.DeleteContact(contactId);
+        
+        Assert.IsType<NotFoundResult>(result);
+        
+        _mockServices.Verify(repo => repo.DeleteAsync(It.IsAny<int>()), Times.Never);
+        
+        _mockLogger.Verify(x => x.LogError($"No contact found for id: {contactId}"), Times.Once);
+    }
+
 }
