@@ -25,7 +25,7 @@ namespace ContactManagement.InfraStructure.Respositories
 
         private IDbConnection CreateConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("ConnectionMarla"));
+            return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
 
         public async Task<User> GetByUsernameAsync(string username)

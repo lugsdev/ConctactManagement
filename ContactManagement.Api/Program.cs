@@ -31,8 +31,8 @@ builder.Services.AddSwaggerGen(c =>
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     
-    c.IncludeXmlComments(xmlPath); // Include XML comments
-    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}"); 
+    c.IncludeXmlComments(xmlPath); 
+    //c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}"); 
     c.EnableAnnotations(); 
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-string connectionString = builder.Configuration.GetConnectionString("ConnectionMarla");
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddTransient<IDbConnection>(db => new SqlConnection(connectionString));
 
 builder.Services.AddScoped<IContactServices, ContactServices>();

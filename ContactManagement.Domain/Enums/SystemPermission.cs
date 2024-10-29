@@ -3,19 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ContactManagement.Domain.Enums
 {
+    [SwaggerSchema("System permission is the user level, [0] Admin, [1] User, [2] Guest")]
+    /// <summary>
+    /// Enum representing different system permission levels for a user.
+    /// </summary>
     public enum SystemPermissionType
     {
+        /// <summary>
+        /// Admin level permission.
+        /// </summary>
         Admin,
-        Usuario,
-        Convidado
+        
+        /// <summary>
+        /// User level permission.
+        /// </summary>
+        User,
+        
+        /// <summary>
+        /// Guest level permission.
+        /// </summary>
+        Guest
     }
+    
+    /// <summary>
+    /// Class used for define System Permisions
+    /// </summary>
     public static class SystemPermission
     {
-        public const string Admin = "Administrador";
-        public const string Usuario = "Usuario";
-        public const string Convidado = "Convidado";
+        public const string Admin = "Admin";
+        public const string Usuario = "User";
+        public const string Convidado = "Guest";
     }
 }

@@ -18,4 +18,8 @@
       <ProjectReference Include="..\ContactManagement.InfraStructure\ContactManagement.InfraStructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="LOG-2024-10-27.txt" />
+    </ItemGroup>
+
 </Project>
