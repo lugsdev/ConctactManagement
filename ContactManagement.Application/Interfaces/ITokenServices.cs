@@ -1,6 +1,10 @@
-namespace ContactManagement.Application.Interfaces;
+using System.Threading.Tasks;
+using ContactManagement.Domain.Models;
 
-public class ITokenServices
+namespace ContactManagement.Application.Interfaces
 {
-    
+    public interface ITokenService
+    {
+        Task<string> GetToken(User user); // Método deve ser assíncrono
+    }
 }
