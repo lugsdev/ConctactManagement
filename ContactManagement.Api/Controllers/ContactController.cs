@@ -4,6 +4,7 @@ using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TechChallenge.Api.Loggin;
 
 namespace ContactManagement.Api.Controllers;
@@ -33,9 +34,7 @@ public class ContactController : ControllerBase
         /// </summary>
         /// <returns>A list of all contacts.</returns>
         [HttpGet]
-        [Authorize]
          public async Task<ActionResult<IEnumerable<ContactReadDto>>> GetAllContacts()
-
         {
             
             var contacts = await _contactServices.GetAllAsync();
@@ -63,8 +62,7 @@ public class ContactController : ControllerBase
         /// <param name="id">The identifier of the contact.</param>
         /// <returns>The contact with the specified identifier.</returns>
         [HttpGet("{id}")]
-    [Authorize(Roles = SystemPermission.Usuario)]
-    public async Task<ActionResult<ContactDto>> GetContactById(int id)
+	    public async Task<ActionResult<ContactDto>> GetContactById(int id)
         {
             var contact = await _contactServices.GetByIdAsync(id);
             if (contact == null)
@@ -86,11 +84,14 @@ public class ContactController : ControllerBase
             _logger.LogError($"Contact was successfully with id: {id}");    
             return Ok(contactDto);
         }
-
-
+	
+		/// <summary>
+		/// Retrieves a contact by its area code.
+		/// </summary>
+		/// <param name="areaCode"></param>
+		/// <returns></returns>
 	    [HttpGet("/{areaCode}")]
-    [Authorize(Roles = SystemPermission.Usuario)]
-    public async Task<ActionResult<IEnumerable<ContactDto>>> GetContactByAreaCode(int areaCode)
+	    public async Task<ActionResult<IEnumerable<ContactDto>>> GetContactByAreaCode(int areaCode)
 	    {
 		    var contacts = await _contactServices.GetByAreaCodeAsync(areaCode);
 		    if (contacts == null)
@@ -111,7 +112,7 @@ public class ContactController : ControllerBase
 	}
 
 	/// <summary>
-	/// Adds a new contact.
+	/// Adds a new contact, requires a user Token.
 	/// </summary>
 	/// <param name="contactDto">The contact to add.</param>
 	/// <returns>The identifier of the newly added contact.</returns>
@@ -127,13 +128,13 @@ public class ContactController : ControllerBase
         }
 
         /// <summary>
-        /// Updates an existing contact.
+        /// Updates an existing contact, requires a user Token.
         /// </summary>
         /// <param name="id">The identifier of the contact to update.</param>
         /// <param name="contactDto">The updated contact information.</param>
         /// <returns>A status indicating the result of the operation.</returns>
         [HttpPut("{id}")]
-    [Authorize(Roles = SystemPermission.Admin)]
+		[Authorize(Roles = SystemPermission.Usuario)]
         public async Task<IActionResult> UpdateContact(int id, [FromBody] ContactDto contactDto)
         {
             var existingContact = await _contactServices.GetByIdAsync(id);
@@ -151,12 +152,12 @@ public class ContactController : ControllerBase
         }
 
         /// <summary>
-        /// Deletes a contact by its unique identifier.
+        /// Deletes a contact by its unique identifier, requires a admin Token.
         /// </summary>
         /// <param name="id">The identifier of the contact to delete.</param>
         /// <returns>A status indicating the result of the operation.</returns>
         [HttpDelete("{id}")]
-    [Authorize(Roles = SystemPermission.Admin)]
+		[Authorize(Roles = SystemPermission.Admin)]
         public async Task<IActionResult> DeleteContact(int id)
         {
             
