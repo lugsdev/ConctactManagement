@@ -4,8 +4,6 @@ using ContactManagement.Domain.Entities;
 using ContactManagement.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using TechChallenge.Api.Loggin;
 
 namespace ContactManagement.Api.Controllers;
 
@@ -38,11 +36,18 @@ public class ContactController : ControllerBase
         {
             
             var contacts = await _contactServices.GetAllAsync();
+
             if (contacts is null)
             {
 	            _logger.LogError("No contacts found");
-	            return NotFound();
-            }
+
+                var errorResponse = new ErrorResponse
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Errors = new List<string> { "No contacts found." }
+                };
+                return NotFound(errorResponse);
+             }
             
             _logger.LogInformation($"The list of contact was successfully received");
             return Ok(contacts.Select(contact => new ContactReadDto
