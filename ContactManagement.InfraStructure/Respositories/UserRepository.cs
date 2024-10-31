@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContactManagement.Domain.Interfaces;
 using ContactManagement.Domain.Entities;
-using ContactManagement.Domain.Interfaces;
-using ContactManagement.Domain.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-
+using System.Data;
+using System.Data.SqlClient;
 
 namespace ContactManagement.InfraStructure.Respositories
 {
-    public class UserRepository: IUserRepository
+	public class UserRepository: IUserRepository
     {
         private readonly IConfiguration _configuration;
 
@@ -25,7 +18,7 @@ namespace ContactManagement.InfraStructure.Respositories
 
         private IDbConnection CreateConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            return new SqlConnection(_configuration.GetConnectionString("ConnectionLucas"));
         }
 
         public async Task<User> GetByUsernameAsync(string username)

@@ -1,4 +1,3 @@
-using ContactManagement.Application.Dtos;
 using ContactManagement.Domain.Entities;
 
 namespace ContactManagement.Application.Interfaces;

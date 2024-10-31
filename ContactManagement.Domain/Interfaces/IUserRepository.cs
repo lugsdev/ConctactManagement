@@ -1,4 +1,4 @@
-﻿using ContactManagement.Domain.Models;
+﻿using ContactManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

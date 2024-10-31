@@ -11,7 +11,8 @@ public class ContactDto
     [SwaggerSchema("The last name of the contact.")]
     public string LastName { get; set; }
     
-    [SwaggerSchema("The area code for the contact's phone number.")]    public string AreaCode { get; set; }
+    [SwaggerSchema("The area code for the contact's phone number.")]    
+    public string AreaCode { get; set; }
     
     [SwaggerSchema("The contact's phone number.")]
     public string PhoneNumber { get; set; }

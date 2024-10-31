@@ -47,3 +47,4 @@ artifacts/
 
 # ReSharper
 _ReSharper*/
+ContactManagement.Api/LOG*.txt
