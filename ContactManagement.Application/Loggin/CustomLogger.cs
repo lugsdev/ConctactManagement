@@ -1,8 +1,7 @@
 using System.Globalization;
-using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace TechChallenge.Api.Loggin;
+namespace ContactManagement.Application.Loggin;
 
 public class CustomLogger : ILogger
 {
