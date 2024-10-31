@@ -1,16 +1,15 @@
+using ContactManagement.Application.Interfaces;
+using ContactManagement.Domain.Interfaces;
+using ContactManagement.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using ContactManagement.Application.Interfaces;
-using ContactManagement.Domain.Interfaces;
-using ContactManagement.Domain.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ContactManagement.Application.Services
 {
-    public class TokenService : ITokenService
+	public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;

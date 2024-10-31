@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
 namespace ContactManagement.Domain.Enums
 {
-    [SwaggerSchema("System permission is the user level, [0] Admin, [1] User, [2] Guest")]
+	[SwaggerSchema("System permission is the user level, [0] Admin, [1] User, [2] Guest")]
     /// <summary>
     /// Enum representing different system permission levels for a user.
     /// </summary>

@@ -1,13 +1,10 @@
-﻿
-using ContactManagement.Application.Interfaces;
-using ContactManagement.Domain.Models;
-using Microsoft.AspNetCore.Http;
+﻿using ContactManagement.Application.Interfaces;
+using ContactManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace ContactManagement.Api.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {

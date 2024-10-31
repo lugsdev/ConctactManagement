@@ -1,5 +1,4 @@
-﻿
-using ContactManagement.Application.Loggin;
+﻿using ContactManagement.Application.Loggin;
 
 namespace ContactManagement.Api.Configurations;
 

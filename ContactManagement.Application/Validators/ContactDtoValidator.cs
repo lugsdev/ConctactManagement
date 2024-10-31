@@ -1,14 +1,9 @@
 ﻿using ContactManagement.Application.Dtos;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactManagement.Application.Validators
 {
-    public class ContactDtoValidator : AbstractValidator<ContactDto>
+	public class ContactDtoValidator : AbstractValidator<ContactDto>
     {
         public ContactDtoValidator()
         {
