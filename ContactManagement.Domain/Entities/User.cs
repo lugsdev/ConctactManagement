@@ -35,6 +35,25 @@ public class User
 	/// <summary>
 	/// The system permission level for the user.
 	/// </summary>
-
 	public SystemPermissionType SystemPermission { get; set; }
+
+	/// <summary>
+	/// Only use for ORM
+	/// </summary>
+	protected User()
+    {
+        
+    }
+	/// <summary>
+	/// Initializes a new instance of the <see cref="User"/> class.
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="username"></param>
+	/// <param name="password"></param>
+	public User(int id, string username, string password)
+    {
+        this.Id = id;
+		this.Username = username;
+		this.Password = password;
+    }
 }

@@ -1,4 +1,5 @@
-﻿using ContactManagement.Application.Interfaces;
+﻿using ContactManagement.Application.Dtos;
+using ContactManagement.Application.Interfaces;
 using ContactManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,8 +17,9 @@ namespace ContactManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] User user)
+        public async Task<IActionResult> Post([FromBody] UserDto userDto)
         {
+            var user = new User(0, userDto.Username, userDto.Password);
             var token = await _tokenService.GetToken(user);
 
             if (string.IsNullOrWhiteSpace(token))
