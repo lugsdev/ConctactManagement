@@ -4,12 +4,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 80
-EXPOSE 81
-
-ENV ASPNETCORE_URLS=http://+:8080;http://+:80;
-ENV ASPNETCORE_ENVIROMENT=Development
-ENV DOTNET_ENVIROMENT=Development
+EXPOSE 8080
+EXPOSE 8081
 
 
 # Esta fase é usada para compilar o projeto de serviço
