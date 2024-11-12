@@ -12,3 +12,10 @@ jobs:
               with:
                 username: 'zennbyte'
                 password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push Docker images
+              uses: docker/build-push-actions@v5.0.0
+              with:
+                context: .
+                tags: 'latest'
+                push: true
