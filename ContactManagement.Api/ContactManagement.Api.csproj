@@ -6,6 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>7e21f769-c52b-4fa0-b3dd-eb1842dfe959</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\net8.0\ContactManagement.Api.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
